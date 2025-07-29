@@ -1,0 +1,24 @@
+<div id="<%= dom_id document %>" class="w-full sm:w-auto my-5 space-y-5">
+
+  <% if params[:action] == "show" %>
+  <div>
+    <h1><%= document.name %></h1>
+  </div>
+  <div>
+    <strong class="font-medium mb-1">Id:</strong>
+    <%= document.id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Description:</strong>
+    <%= document.description %>
+  </div>
+  <% else %>
+  <div>
+    <h2><%= document.name %></h2>
+  </div>
+  <div>
+    <%= document.preview_text %>
+  </div>
+  <% end %>
+
+</div>

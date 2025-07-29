@@ -1,0 +1,19 @@
+<% title = capture do %>
+  Product label #<%= @product_label.id %>
+<% end %>
+<% content_for :title, title %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <section aria-label="Breadcrumbs" class="breadcrumbs text-sm">
+    <ul>
+      <li><%= link_to "Product Labels Index", product_labels_path %></li>
+      <li><%= title %></li>
+    </ul>
+  </section>
+
+  <%= render @product_label %>
+</div>
