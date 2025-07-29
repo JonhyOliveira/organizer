@@ -1,0 +1,17 @@
+<%
+hero_wrapper_class = document.description.present? ? "text-start ml-10" : "text-center"
+card_extra_class = document.description.nil? ? "place-content-center" : nil
+%>
+
+<div class="<%= ['w-86 h-52 flex flex-row text-center rounded-md bg-purple-300 inset-48 inset-ring-purple-600 gap-2 p-2', card_extra_class].compact.join(' ') %>">
+    <div class="<%= hero_wrapper_class %>">
+        <h2><%= document.name %></h2>
+        <img src="/placeholder.svg" class="w-36 rounded-2xl"/>
+    </div>
+    <% if document.description.present? %>
+        <section class="my-2">
+            <%= document.description %>
+        </section>
+    <% end %>
+</div>
+

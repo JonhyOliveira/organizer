@@ -1,0 +1,20 @@
+<div class="w-full h-full">
+    <section class="w-full text-center font-mono" aria-label="Motivation">
+        <h1 class="text-shadow-cyan-900 text-shadow-md text-purple-400">Stay chill</h1>
+        <p class="my-4">Life is good.</p>
+    </section>
+
+    <%
+    row_count = (@documents.count / 3).to_i
+    col_count = [3, row_count].min
+    %>
+
+    <section class="w-full gap-3 grid grid-flow-col grid-cols-<%= col_count %> grid-rows-<%= row_count %> place-content-around
+        px-10 py-8 bg-purple-400 rounded-2xl shadow-cyan-900 shadow-xl/40 min-h-20 font-stretch-normal auto" aria-label="documents">
+        <% @documents.each do |document| %>
+            <%= link_to document.link, class: "w-fit" do %>
+                <%= render partial: "document", locals: { document: document } %>
+            <% end %>
+        <% end %>
+    </section>
+</div>
