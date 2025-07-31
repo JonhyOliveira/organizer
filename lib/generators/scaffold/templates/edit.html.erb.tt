@@ -1,0 +1,14 @@
+<%% content_for :title, "Editing <%= human_name.downcase %>" %>
+
+<div class="md:w-2/3 w-full">
+    <div class="breadcrumbs text-sm">
+        <ul>
+            <li><%%= link_to "<%= human_name.pluralize %>", <%= index_helper %>_path %></li>
+            <li><%%= link_to "<%= human_name %>##{@<%= singular_table_name %>.id}", <%= model_resource_name(prefix: "@") %> %></li>
+            <li>Editing <%= human_name %>#<%%= @<%= singular_table_name %>.id %></li>
+        </ul>
+    </div>
+    <div class="divider"></div>
+
+  <%%= render "form", <%= singular_table_name %>: @<%= singular_table_name %> %>
+</div>
