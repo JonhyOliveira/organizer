@@ -10,15 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_29_125458) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_02_154537) do
+  create_table "content_blocks", force: :cascade do |t|
+    t.integer "document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.json "metadata"
+    t.string "previous_block_type"
+    t.integer "previous_block_id"
+    t.string "next_block_type"
+    t.integer "next_block_id"
+    t.integer "sort_index"
+    t.index ["document_id", "sort_index"], name: "index_content_blocks_on_document_id_and_sort_index", unique: true
+    t.index ["document_id"], name: "index_content_blocks_on_document_id"
+  end
+
   create_table "documents", force: :cascade do |t|
-    t.text "link"
-    t.text "name"
-    t.text "preview_text"
-    t.text "description"
-    t.date "date"
-    t.integer "object_id"
-    t.text "object_type"
+    t.string "title"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -42,4 +52,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_125458) do
     t.float "volume", null: false
     t.index ["baseline_type"], name: "index_product_labels_on_baseline_type"
   end
+
+  add_foreign_key "content_blocks", "documents"
 end

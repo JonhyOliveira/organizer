@@ -11,32 +11,40 @@
     </div>
   <% end %>
 
-  <% #<div class="my-5"> %>
-  <% #<%= form.label :link %>
-  <% #<%= form.textarea :link, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": document.errors[:link].none?, "border-red-400 focus:outline-red-600": document.errors[:link].any?}] %>
-  <% #</div>  %>
+  <table class="table shadow-xs">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= form.label :title %></td>
+        <td><%= form.text_field :title, class: ["input", {"input-info": document.errors[:title].none?, "input-error": document.errors[:title].any?}] %></td></td>
+      </tr>
+      <tr>
+        <td><%= form.label :description %></td>
+        <td><%= form.text_field :description, class: ["input", {"input-info": document.errors[:description].none?, "input-error": document.errors[:description].any?}] %></td></td>
+      </tr>
+    </tbody>
+  </table>
 
-  <% #<div class="my-5"> %>
-  <% #<%= form.label :name %>
-  <% #<%= form.textarea :name, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": document.errors[:name].none?, "border-red-400 focus:outline-red-600": document.errors[:name].any?}] %>
-  <% #</div> %>
-
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.textarea :name, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": document.errors[:preview_text].none?, "border-red-400 focus:outline-red-600": document.errors[:preview_text].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": document.errors[:description].none?, "border-red-400 focus:outline-red-600": document.errors[:description].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :date %>
-    <%= form.date_field :date, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": document.errors[:date].none?, "border-red-400 focus:outline-red-600": document.errors[:date].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex flex-col gap-2">
+    <% unless document.new_record? %>
+    <turbo-frame id="edit_contents">
+      <%= button_to document_content_blocks_path(document_id: document.id), method: :post do %>
+        <div class="w-fit flex flex-row gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+          </svg>
+          <div class="w-full" data-action="click->"></div>
+        </div>
+      <% end %>
+    </turbo-frame>
+    <% end %>
+    <div class="inline">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>

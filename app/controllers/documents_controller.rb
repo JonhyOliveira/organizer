@@ -57,6 +57,12 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def search
+    @documents = Document.search(search_params[:text])
+
+    render "index"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_document
@@ -65,6 +71,10 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.expect(document: [ :link, :name, :preview_text, :description, :date ])
+      params.expect(document: [ :title, :description ])
+    end
+
+    def search_params
+      params.expect(search: [ :text ])
     end
 end
