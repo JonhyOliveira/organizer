@@ -18,6 +18,9 @@ class ContentBlocksController < ApplicationController
   end
 
   def update
+    content_block = ContentBlock.find(params[:content_block_id])
+
+    content_block.update!(update_params)
   end
 
   def destroy
@@ -55,5 +58,11 @@ class ContentBlocksController < ApplicationController
       end
       format.html { redirect_to content_block.document.object, highligh_content_block: content_block.id }
     end
+  end
+
+  private
+
+  def update_params
+    params.expect(content_block: [ :metadata ])
   end
 end

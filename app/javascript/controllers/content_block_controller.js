@@ -23,11 +23,14 @@ export default class extends Controller {
   }
 
   onInput(event) {
-    console.debug("Input event in content block editor", event.target.innerHTML);
+    if (this.saveTimeout)
+      clearTimeout(this.saveTimeout)
+
     if (this.hasEditDataTarget) {
       const data = event.target.innerHTML
       this.editDataTarget.value = data
     }
+    this.saveTimeout = setTimeout(() => this.updateSubmitButtonTarget.click(), 2000)
   }
 
   delete() {

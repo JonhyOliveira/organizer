@@ -5,9 +5,10 @@
             <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
         </svg>
     <% end %>
-    <%= form_with model: content_block.becomes(ContentBlock), method: :put, class: do |f| %>
-        <%= f.hidden_field :data, data: { "content-block-target": "editData" } %>
-        <%= f.submit hidden: true, data: { "content-block-target": "updateSubmitButton" } %>
+    <%= form_with model: content_block.becomes(ContentBlock), method: :put, class: "button_to" do |f| %>
+        <%= f.hidden_field :metadata, data: { "content-block-target": "editData" } %>
+        <button hidden="hidden" data-turbo-stream="true" data-content-block-target="updateSubmitButton" type="submit">
+        </button>
     <% end %>
     <%= button_to document_content_block_path(document_id: content_block.document_id, content_block_id: content_block.id), method: :delete, hidden: true, data: { turbo_stream: true, "content-block-target": "deleteSubmitButton" } do %>
     <% end %>
