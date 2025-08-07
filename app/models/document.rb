@@ -1,5 +1,4 @@
 class Document < ApplicationRecord
-
   class NoSingleRootError < StandardError
     attr_accessor :document_id, :roots_count
 
@@ -8,20 +7,6 @@ class Document < ApplicationRecord
       @document_id = document_id
       @roots_count = roots_count
     end
-  end
-
-  SEARCH_INDEX = "documents_search_index"
-  TABLE_NAME = "documents"
-
-  scope :search, ->(query) do
-    joins("join #{SEARCH_INDEX} idx on #{TABLE_NAME}.id = idx.rowid")
-    .where("#{SEARCH_INDEX} match ?", query)
-  end
-
-  scope :with_snippets, ->(**options) do
-    select("#{TABLE_NAME}.*")
-    .select_snippet("title", 0, **options)
-    .select_snippet("description", 1, **options)
   end
 
   has_many :content_blocks, inverse_of: :document do
@@ -62,12 +47,22 @@ class Document < ApplicationRecord
 
   validates_presence_of :title
 
-  after_create_commit  :create_in_search_index
-  after_update_commit  :update_in_search_index
-  after_destroy_commit :remove_from_search_index
-
   def name
     self.title
+  end
+
+  def sanitize!
+    content_blocks.chain.reverse.each_with_index do |content_block, index|
+      break if content_block.root?
+      if content_block.text_content.blank?
+        content_block.destroy!
+        Rails.logger.info "Removed empty trailing content block from document"
+      end
+    end
+
+    if content_blocks.none?
+      content_blocks.create!(type: ContentBlock::Span, sort_index: 0)
+    end
   end
 
   def add_content_block(new_content_block, reference_content_block, placement: :after)
@@ -126,30 +121,5 @@ class Document < ApplicationRecord
 
       content_blocks_to_save.reverse.each(&:save!)
     end
-  end
-
-  def update_in_search_index
-    transaction do
-      remove_from_search_index
-      create_in_search_index
-    end
-  end
-
-  private
-
-  def create_in_search_index
-    execute_sql_with_binds "insert into #{SEARCH_INDEX} (rowid, title, description) values (?, ?, ?)", id, title, description
-  end
-
-  def remove_from_search_index
-    execute_sql_with_binds "insert into #{SEARCH_INDEX} (#{SEARCH_INDEX}, rowid, title, description) values ('delete', ?, ?, ?)", id_previously_was, title_previously_was, description_previously_was
-  end
-
-  def execute_sql_with_binds(*statement)
-    self.class.connection.execute self.class.sanitize_sql(statement)
-  end
-
-  def self.select_snippet(column, offset, tag: "mark", omission: "…", limit: 32)
-    select("snippet(#{SEARCH_INDEX}, #{offset}, '<#{tag}>', '</#{tag}>', '#{omission}', #{limit}) AS #{column}_snippet")
   end
 end

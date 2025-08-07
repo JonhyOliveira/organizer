@@ -1,12 +1,17 @@
 class ContentBlocksController < ApplicationController
   include ActionView::RecordIdentifier
 
-  def index
-    @document = Document.includes(:content_blocks).find(params[:document_id])
+  def sanitize
+    @document.sanitize!
 
     if @document.content_blocks.none?
       @document.content_blocks.create!(type: ContentBlock::Span, sort_index: 0)
     end
+  end
+
+  def index
+    @document = Document.find(params[:document_id])
+    sanitize
   end
 
   def show
@@ -16,6 +21,19 @@ class ContentBlocksController < ApplicationController
   end
 
   def destroy
+    content_block = ContentBlock.includes(:document).find(params[:content_block_id])
+    document = content_block.document
+
+    if content_block.destroy
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.remove(dom_id(content_block))
+        end
+        format.html { redirect_to document.object, notice: "Content block deleted successfully." }
+      end
+    else
+      respond_with_error "Failed to delete content block."
+    end
   end
 
   def create

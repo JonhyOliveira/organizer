@@ -3,10 +3,14 @@ Rails.application.routes.draw do
   resources :documents do
     collection do
       post :search
+      post :sanitize
     end
 
-    resources :content_blocks, except: [ :new, :edit ], param: :content_block_id
+    resources :content_blocks, except: [ :new, :edit ], param: :content_block_id do
+    end
   end
+
+  resources :content_blocks, controller: "content_blocks", except: [ :new, :edit ], param: :content_block_id
   resources :tasks
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

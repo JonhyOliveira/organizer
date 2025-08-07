@@ -1,3 +1,5 @@
-<turbo-frame id="<%= dom_id @document %>_content_blocks" class="w-full">
+<turbo-frame id="<%= dom_id @document %>_content_blocks" class="w-full" data-controller="content-blocks">
     <%= render partial: "content_block/content_block", collection: @document.content_blocks.sorted %>
+    <%= button_to sanitize_documents_path(document_id: @document.id), method: :post, hidden: true, data: { turbo_stream: true, "content-blocks-target": "sanitizeSubmitButton" } do %>
+    <% end %>
 </turbo-frame>
