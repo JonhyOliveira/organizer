@@ -9,9 +9,9 @@ class Document < ApplicationRecord
     end
   end
 
-  has_many :content_blocks, inverse_of: :document do
+  has_many :content_blocks, inverse_of: :document, autosave: true do
     def sorted
-      order(:sort_index)
+      order(:sort_index).where.not(sort_index: nil)
     end
 
     def roots
@@ -25,7 +25,7 @@ class Document < ApplicationRecord
     def chain
       chain = []
 
-      raise NoSingleRootError.new(self.id, roots.count) if roots.count != 1
+      raise NoSingleRootError.new(self.ids, roots.count) if roots.count != 1
 
       root = roots.first
       current = root
@@ -51,17 +51,21 @@ class Document < ApplicationRecord
     self.title
   end
 
+  def build_empty_span
+    content_blocks.build(type: ContentBlock::Span)
+  end
+
   def sanitize!
-    content_blocks.chain.reverse.each_with_index do |content_block, index|
-      break if content_block.root?
-      if content_block.text_content.blank?
-        content_block.destroy!
-        Rails.logger.info "Removed empty trailing content block from document"
-      end
+    if content_blocks.none?
+      cb = build_empty_span
+      cb.sort_index = 0
+      cb.save!
     end
 
-    if content_blocks.none?
-      content_blocks.create!(type: ContentBlock::Span, sort_index: 0)
+    content_blocks.chain.reverse.each_with_index do |content_block, index|
+      break if content_block.root? || content_block.text_content.present?
+      content_block.destroy!
+      Rails.logger.info "Removed empty trailing content block from document"
     end
   end
 
@@ -94,6 +98,21 @@ class Document < ApplicationRecord
     changed_blocks.compact.each(&:save!)
 
     resort_from(new_content_block)
+
+    save
+  end
+
+  def remove_content_block(content_block)
+    content_block.previous_block.next_block = content_block.next_block if content_block.previous_block.present?
+    content_block.next_block.previous_block = content_block.previous_block if content_block.next_block.present?
+
+    if content_block.previous_block.present?
+      resort_from(content_block.previous_block)
+    elsif content_block.next_block.present?
+      resort_from(content_block.next_block)
+    end
+
+    save
   end
 
   class LoopDetectedError < StandardError

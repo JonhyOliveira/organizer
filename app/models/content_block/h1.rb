@@ -1,1 +1,1 @@
-class ContentBlock::H1 < ContentBlock; end
+class ContentBlock::H1 < ContentBlock::Native; end

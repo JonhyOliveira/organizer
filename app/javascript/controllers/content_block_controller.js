@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="content-block"
 export default class extends Controller {
-  static targets = [ "updateSubmitButton", "createSubmitButton", "deleteSubmitButton", "editData" ]
-  static values = { placeholder: Boolean }
+  static targets = [ "updateSubmitButton", "createSubmitButton", "deleteSubmitButton", "editData", "contentHolder" ]
+  static values = { placeholder: Boolean, age: String }
 
   connect() {
     console.info("ContentBlockEditingController connected", this.element);
@@ -11,7 +11,9 @@ export default class extends Controller {
     console.debug("hasUpdateSubmitButtonTarget:", this.hasUpdateSubmitButtonTarget);
     console.debug("hasCreateSubmitButtonTarget:", this.hasCreateSubmitButtonTarget);
     console.debug("hasDeleteSubmitButtonTarget:", this.hasDeleteSubmitButtonTarget);
+    console.debug("hasContentHolder", this.hasContentHolderTarget)
     console.debug("placeholderValue:", this.placeholderValue);
+    console.debug("ageValue", this.ageValue)
   }
 
   onKeyPress(event) {
@@ -23,6 +25,7 @@ export default class extends Controller {
   }
 
   onInput(event) {
+    console.log("Received input event", event)
     if (this.saveTimeout)
       clearTimeout(this.saveTimeout)
 
@@ -30,16 +33,21 @@ export default class extends Controller {
       const data = event.target.innerHTML
       this.editDataTarget.value = data
     }
-    this.saveTimeout = setTimeout(() => this.updateSubmitButtonTarget.click(), 2000)
+
+    this.saveTimeout = setTimeout(() => {
+      this.updateSubmitButtonTarget.click()
+      console.debug("Submited form")
+    }, 3000)
   }
 
-  delete() {
-    console.debug("Deleting content block", this.element);
-    this.deleteSubmitButtonTarget.click();
+  showActionItems() {
+    this.createSubmitButtonTarget.classList.remove("invisible")
+    this.deleteSubmitButtonTarget.classList.remove("invisible")
   }
 
-  get blockContent() {
-    return this.editDataTarget.value
+  hideActionItems() {
+    this.createSubmitButtonTarget.classList.add("invisible")
+    this.deleteSubmitButtonTarget.classList.add("invisible")
   }
 }
 

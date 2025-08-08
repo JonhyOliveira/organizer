@@ -1,1 +1,1 @@
-class ContentBlock::Span < ContentBlock; end
+class ContentBlock::Span < ContentBlock::Native; end

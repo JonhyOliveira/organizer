@@ -1,18 +1,31 @@
-<turbo-frame id="<%= dom_id content_block %>" class="flex flex-row gap-2 items-center w-full"
-    data-controller="content-block" data-content-block-placeholder-value="<%= content_block.is_placeholder ? "true" : "false" %>">
-    <%= button_to document_content_blocks_path(document_id: content_block.document_id, content_block_id: content_block.id, placement: :after), data: { turbo_stream: true, "content-block-target": "createSubmitButton" }, method: :post, class: "flex flex-row items-center cursor-pointer" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-            <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
-        </svg>
-    <% end %>
+<turbo-frame id="<%= dom_id content_block %>" class="flex flex-row gap-2 items-center w-full content-block"
+    data-controller="content-block"
+    data-content-block-age-value="<%= (Time.zone.now - content_block.created_at).to_i %>"
+    data-action="mouseenter->content-block#showActionItems mouseleave->content-block#hideActionItems">
+    <div class="flex flex-row self-start gap-2" aria-lablel="actions">
+        <%= button_to document_content_block_path(document_id: content_block.document_id, content_block_id: content_block.id),
+            method: :delete, data: { turbo_stream: true, "content-block-target": "deleteSubmitButton" },
+            class: "flex flex-row items-center cursor-pointer invisible" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />
+            </svg>
+        <% end %>
+        <%= button_to document_content_blocks_path(document_id: content_block.document_id, content_block_id: content_block.id,
+            placement: :after), data: { turbo_stream: true, "content-block-target": "createSubmitButton" },
+            method: :post, class: "flex flex-row items-center cursor-pointer invisible" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+            </svg>
+        <% end %>
+    </div>
     <%= form_with model: content_block.becomes(ContentBlock), method: :put, class: "button_to" do |f| %>
         <%= f.hidden_field :metadata, data: { "content-block-target": "editData" } %>
         <button hidden="hidden" data-turbo-stream="true" data-content-block-target="updateSubmitButton" type="submit">
         </button>
     <% end %>
-    <%= button_to document_content_block_path(document_id: content_block.document_id, content_block_id: content_block.id), method: :delete, hidden: true, data: { turbo_stream: true, "content-block-target": "deleteSubmitButton" } do %>
-    <% end %>
     <div class="w-full flex">
-        <%= render content_block, data_action: "input->content-block#onInput keypress->content-block#onKeyPress" %>
+        <% if content_block.is_a? ContentBlock::Native %>
+            <%= render partial: "native", locals: { content_block: content_block, data_action: "input->content-block#onInput keypress->content-block#onKeyPress" } %>
+        <% end %>
     </div>
 </turbo-frame>
