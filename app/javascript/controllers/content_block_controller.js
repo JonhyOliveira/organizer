@@ -40,6 +40,11 @@ export default class extends Controller {
     }, 3000)
   }
 
+  focus() {
+    console.log("focus", this.element)
+    this.contentHolderTarget.focus()
+  }
+
   showActionItems() {
     this.createSubmitButtonTarget.classList.remove("invisible")
     this.deleteSubmitButtonTarget.classList.remove("invisible")

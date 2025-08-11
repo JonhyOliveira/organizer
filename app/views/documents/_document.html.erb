@@ -2,6 +2,7 @@
 <% show_details ||= false %>
 <% show_content ||= false %>
 <% show_main_stat ||= false %>
+<% show_description_stat ||= false %>
 <% link_stat ||= false %>
 
 <% document_stat = capture do %>
@@ -20,6 +21,12 @@
     <div class="stats stats-horizontal">
         <% if show_main_stat %>
             <%= document_stat %>
+        <% end %>
+        <% if show_description_stat %>
+            <div class="stat">
+                <span class="stat-value"><%= document.title %></span>
+                <span class="stat-desc"><%= document.description %></span>
+            </div>
         <% end %>
         <% if show_actions %>
         <div class="stat">
@@ -43,31 +50,8 @@
         </div>
         <% end %>
     </div>
-    <% if show_details %>
-    <table class="table table-sm">
-        <thead>
-            <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td><strong>Title</strong></td>
-                <td><%= document.title %></td>
-            </tr>
-
-            <tr>
-                <td><strong>Description</strong></td>
-                <td><%= document.description %></td>
-            </tr>
-        </tbody>
-    </table>
-    <% end %>
     <% if show_content %>
         <div class="divider"></div>
-        <turbo-frame id="<%= dom_id document %>_content_blocks" src="<%= document_content_blocks_path(document) %>">
-        </turbo-frame>
+        <%= turbo_frame_tag dom_id(document) + "_content_blocks", src: document_content_blocks_path(document, format: :turbo_stream) do; end %>
     <% end %>
 </div>

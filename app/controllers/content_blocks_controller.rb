@@ -12,6 +12,15 @@ class ContentBlocksController < ApplicationController
   def index
     @document = Document.find(params[:document_id])
     sanitize
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("#{dom_id(@document)}_content_blocks",
+          partial: "content_blocks/collection", locals: { document: @document })
+      end
+
+      format.html { render "index" }
+    end
   end
 
   def show
@@ -27,7 +36,7 @@ class ContentBlocksController < ApplicationController
     content_block = ContentBlock.includes(:document).find(params[:content_block_id])
     document = content_block.document
 
-    if content_block.destroy
+    if document.remove_content_block(content_block)
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.remove(dom_id(content_block))
@@ -56,13 +65,13 @@ class ContentBlocksController < ApplicationController
           partial: "content_block/content_block",
           locals: { content_block: new_content_block })
       end
-      format.html { redirect_to content_block.document.object, highligh_content_block: content_block.id }
+      format.html { redirect_to content_block.document.object, highlight_content_block: content_block.id }
     end
   end
 
   private
 
   def update_params
-    params.expect(content_block: [ :metadata ])
+    params.expect(content_block: [ :metadata, :type ])
   end
 end

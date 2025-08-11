@@ -17,7 +17,7 @@
       <% @documents.each do |document| %>
         <div class="card card-sm shadow-md p-2 bg-base-100 hover:bg-base-200">
           <div class=card-body>
-          <%= render document, link_stat: true, show_actions: false %>
+          <%= render document, link_stat: true, show_actions: false, show_main_stat: true %>
           </div>
           <div class="card-actions">
             <%= link_to "Show", document, class: "btn" %>

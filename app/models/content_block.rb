@@ -10,12 +10,14 @@ class ContentBlock < ApplicationRecord
     previous_block_id.nil?
   end
 
+  def apply_command
+    raise NotImplementedError
+  end
+
   private
 
   def nullify
     self.next_block_id = nil unless next_block.present?
     self.previous_block_id = nil unless previous_block.present?
-
-    save
   end
 end
