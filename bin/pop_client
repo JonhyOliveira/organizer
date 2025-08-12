@@ -1,0 +1,32 @@
+#! /usr/bin/env ruby
+require "net/imap"
+
+PASSWORD="syfs xdkb jjbi zmcb"
+
+imap = Net::IMAP.new("imap.gmail.com", port: 993, ssl: true)
+
+imap.authenticate("PLAIN", "joaofvmo1002@gmail.com", PASSWORD)
+
+imap.select("INBOX")
+
+inbox_uids = imap.uid_search(['ALL'])
+puts "#{inbox_uids.count} emails"
+
+inbox_uids.each do |uid|
+  data = imap.uid_fetch(uid, ['FLAGS BODY.PEEK[HEADER.FIELDS (DATE)] BODY.PEEK[HEADER.FIELDS (FROM)] BODY.PEEK[HEADER.FIELDS (SUBJECT)] BODY.PEEK[HEADER.FIELDS (Content-Type)]'] )
+  attributes = data[0]
+
+  subject = attributes.attr["BODY[HEADER.FIELDS (SUBJECT)]"]
+  from = attributes.attr["BODY[HEADER.FIELDS (FROM)]"]
+  date = attributes.attr["BODY[HEADER.FIELDS (DATE)]"]
+  content_type = attributes.attr["BODY[HEADER.FIELDS (Content-Type)]"]
+  attachments = []
+
+  puts "UID: #{uid}"
+  puts "Subject: #{subject.encode("iso-8859-1")}"
+  puts "From: #{from}"
+  puts "Date: #{date}"
+  puts "Content-Type: #"
+  puts "----"
+  sleep 1
+end

@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  app: &app
+    build:
+      context: .
+      dockerfile: ./.dockerdev/Dockerfile
+      args:
+        RUBY_VERSION: 3.4.5
+        BUNDLER_VERSION: 2.6.9
+    image: organizer-dev:0.0.1
+
+  backend: &backend
+    <<: *app
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/rails:cached
+      - rails_cache:/rails/tmp/cache
+      - bundle:/bundle
+      - ./exim4:/etc/exim4:cached
+    environment:
+      - RAILS_ENV ${RAILS_ENV:-development}
+      - PORT 9000
+
+  runner:
+    <<: *backend
+    command: /bin/bash
+
+  web:
+    <<: *backend
+    command: "foreman start -f Procfile.dev"
+    ports:
+      - 9000:9000
+      - 25:25
+
+volumes:
+  bundle:
+  rails_cache:

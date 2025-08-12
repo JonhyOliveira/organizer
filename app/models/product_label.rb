@@ -1,5 +1,4 @@
 class ProductLabel < ApplicationRecord
-
   enum :baseline_type, [ :grams, :liters ]
 
   validates_presence_of :energy, :fats, :saturated_fats, :carbohydrates, :sugar_carbohydrates,
@@ -31,5 +30,4 @@ class ProductLabel < ApplicationRecord
     self.vitamins ||= "None"
     self.ingredients ||= "N/A"
   end
-
 end
