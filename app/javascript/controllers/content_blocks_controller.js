@@ -15,13 +15,20 @@ export default class extends Controller {
 
   contentBlockOutletConnected(outlet, element) {
     console.log("content-block-outlet-connected")
-    if (outlet.ageValue < 10) {
       outlet.focus()
+
+      if (!this.selectionStack)
+        this.selectionStack = []
       this.selectionStack.push(outlet)
-    }
   }
 
   contentBlockOutletDisconnected(outlet, element) {
+    if (!this.selectionStack)
+      return
 
+    this.selectionStack = this.selectionStack.filter((v) => v != outlet)
+
+    if (this.selectionStack.length > 0)
+      console.log(this.selectionStack)
   }
 }

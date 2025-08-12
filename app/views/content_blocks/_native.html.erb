@@ -1,5 +1,5 @@
 <% tag_name = content_block.type.split("::").last.downcase %>
-<%= tag.public_send tag_name, class:"w-full", contenteditable: true, placeholder: "No content",
+<%= tag.public_send tag_name, class: ["w-full"] + content_block.becomes(content_block.type.constantize).html_classes, contenteditable: true, placeholder: "No content",
     data: { "content-block-target" => "contentHolder", action: data_action } do %>
     <%= sanitize content_block.metadata %>
 <% end %>

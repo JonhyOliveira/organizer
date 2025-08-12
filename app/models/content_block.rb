@@ -5,12 +5,16 @@ class ContentBlock < ApplicationRecord
   belongs_to :previous_block, polymorphic: true, optional: true
 
   before_validation :nullify
+  before_validation :apply_command
 
   def root?
     previous_block_id.nil?
   end
 
   def apply_command
+  end
+
+  def downgrade!
     raise NotImplementedError
   end
 

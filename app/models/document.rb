@@ -62,10 +62,16 @@ class Document < ApplicationRecord
       cb.save!
     end
 
-    content_blocks.chain.reverse.each_with_index do |content_block, index|
-      break if content_block.root? || content_block.text_content.present?
-      content_block.destroy!
-      Rails.logger.info "Removed empty trailing content block from document"
+    if content_blocks.count == 1
+      root = content_blocks.first
+      root.next_block = nil
+      root.previous_block = nil
+    else
+      content_blocks.chain.reverse.each_with_index do |content_block, index|
+        break if content_block.root? || content_block.text_content.present?
+        content_block.destroy!
+        Rails.logger.info "Removed empty trailing content block from document"
+      end
     end
   end
 
@@ -111,6 +117,8 @@ class Document < ApplicationRecord
     elsif content_block.next_block.present?
       resort_from(content_block.next_block)
     end
+
+    content_block.destroy
 
     save
   end

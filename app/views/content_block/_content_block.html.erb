@@ -1,4 +1,4 @@
-<turbo-frame id="<%= dom_id content_block %>" class="flex flex-row gap-2 items-center w-full content-block"
+<turbo-frame id="<%= dom_id content_block.becomes(ContentBlock) %>" class="flex flex-row gap-2 items-center w-full content-block"
     data-controller="content-block"
     data-content-block-age-value="<%= (Time.zone.now - content_block.created_at).to_i %>"
     data-action="mouseenter->content-block#showActionItems mouseleave->content-block#hideActionItems">
@@ -22,6 +22,9 @@
         <%= f.hidden_field :metadata, data: { "content-block-target": "editData" } %>
         <button hidden="hidden" data-turbo-stream="true" data-content-block-target="updateSubmitButton" type="submit">
         </button>
+    <% end %>
+    <%= button_to downgrade_document_content_block_path(document_id: content_block.document_id, content_block_id: content_block.id),
+        method: :post, data: { turbo_stream: true, "content-block-target": "downgradeSubmitButton" } do %>
     <% end %>
     <div class="w-full flex">
         <% if content_block.is_a? ContentBlock::Native %>
