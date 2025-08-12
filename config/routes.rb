@@ -1,17 +1,24 @@
 Rails.application.routes.draw do
   resources :product_labels
+
+  def content_blocks_resources
+    resources :content_blocks, controller: "content_blocks", except: [ :new, :edit ], param: :content_block_id do
+      member do
+        post :downgrade
+      end
+    end
+  end
+
   resources :documents do
     collection do
       post :search
       post :sanitize
     end
 
-    resources :content_blocks, except: [ :new, :edit ], param: :content_block_id do
-    end
+    content_blocks_resources
   end
 
-  resources :content_blocks, controller: "content_blocks", except: [ :new, :edit ], param: :content_block_id
-  resources :tasks
+  content_blocks_resources
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

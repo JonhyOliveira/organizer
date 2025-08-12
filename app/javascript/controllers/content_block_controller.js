@@ -2,7 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="content-block"
 export default class extends Controller {
-  static targets = [ "updateSubmitButton", "createSubmitButton", "deleteSubmitButton", "editData", "contentHolder" ]
+  static targets = [ "updateSubmitButton", "createSubmitButton", "deleteSubmitButton", "downgradeSubmitButton",
+    "editData", "contentHolder" ]
   static values = { placeholder: Boolean, age: String }
 
   connect() {
@@ -11,6 +12,7 @@ export default class extends Controller {
     console.debug("hasUpdateSubmitButtonTarget:", this.hasUpdateSubmitButtonTarget);
     console.debug("hasCreateSubmitButtonTarget:", this.hasCreateSubmitButtonTarget);
     console.debug("hasDeleteSubmitButtonTarget:", this.hasDeleteSubmitButtonTarget);
+    console.debug("hasDowngradeSubmitButtonTarget", this.hasDowngradeSubmitButtonTarget)
     console.debug("hasContentHolder", this.hasContentHolderTarget)
     console.debug("placeholderValue:", this.placeholderValue);
     console.debug("ageValue", this.ageValue)
@@ -37,7 +39,7 @@ export default class extends Controller {
     this.saveTimeout = setTimeout(() => {
       this.updateSubmitButtonTarget.click()
       console.debug("Submited form")
-    }, 3000)
+    }, 500)
   }
 
   focus() {

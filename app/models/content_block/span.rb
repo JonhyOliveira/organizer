@@ -1,1 +1,5 @@
-class ContentBlock::Span < ContentBlock::Native; end
+class ContentBlock::Span < ContentBlock::Native
+  def downgrade!
+    destroy!
+  end
+end
