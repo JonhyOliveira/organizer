@@ -1,0 +1,5 @@
+class AddDiscardedToContentBlocks < ActiveRecord::Migration[8.0]
+  def change
+    add_column :content_blocks, :discarded_at, :datetime
+  end
+end

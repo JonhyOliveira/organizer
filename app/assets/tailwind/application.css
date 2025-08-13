@@ -37,3 +37,15 @@
   --noise: 0;
 
 }
+
+.tiptap {
+  @apply focus:outline-hidden;
+
+  ul[data-type="taskList"] {
+    @apply my-2;
+
+    li {
+      @apply flex flex-row gap-2
+    }
+  }
+}

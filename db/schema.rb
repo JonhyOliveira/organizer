@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_11_062129) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_13_095016) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -48,26 +48,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_062129) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "content_blocks", force: :cascade do |t|
-    t.integer "document_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "type"
-    t.json "metadata"
-    t.string "previous_block_type"
-    t.integer "previous_block_id"
-    t.string "next_block_type"
-    t.integer "next_block_id"
-    t.integer "sort_index"
-    t.index ["document_id", "sort_index"], name: "index_content_blocks_on_document_id_and_sort_index", unique: true
-    t.index ["document_id"], name: "index_content_blocks_on_document_id"
-  end
-
   create_table "documents", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "content"
+    t.text "content_html"
   end
 
   create_table "product_labels", force: :cascade do |t|
@@ -92,5 +79,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_062129) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "content_blocks", "documents"
 end

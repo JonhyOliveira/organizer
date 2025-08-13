@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[ show edit update destroy ]
+  before_action :set_document, only: %i[ show edit update destroy sanitize ]
 
   # GET /documents or /documents.json
   def index
@@ -47,7 +47,6 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # DELETE /documents/1 or /documents/1.json
   def destroy
     @document.destroy!
 
@@ -55,6 +54,10 @@ class DocumentsController < ApplicationController
       format.html { redirect_to documents_path, status: :see_other, notice: "Document was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def sanitize
+
   end
 
   def search
@@ -71,7 +74,7 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.expect(document: [ :title, :description ])
+      params.expect(document: [ :title, :description, :content, :content_html ])
     end
 
     def search_params
