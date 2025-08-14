@@ -3,6 +3,8 @@ require "test_helper"
 class DocumentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @document = documents(:one)
+
+    assert @document.id.present?, "Document fixture must have an ID"
   end
 
   test "should get index" do
@@ -17,7 +19,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document" do
     assert_difference("Document.count") do
-      post documents_url, params: { document: { date: @document.date, description: @document.description, link: @document.link, name: @document.name, preview_text: @document.preview_text } }
+      post documents_url, params: { document: { title: @document.title, description: @document.description } }
     end
 
     assert_redirected_to document_url(Document.last)
@@ -28,13 +30,13 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_document_url(@document)
-    assert_response :success
-  end
+  # test "should get edit" do
+  #   get edit_document_url(@document)
+  #   assert_response :success
+  # end
 
   test "should update document" do
-    patch document_url(@document), params: { document: { date: @document.date, description: @document.description, link: @document.link, name: @document.name, preview_text: @document.preview_text } }
+    patch document_url(@document), params: { document: { description: @document.description, title: @document.title } }
     assert_redirected_to document_url(@document)
   end
 

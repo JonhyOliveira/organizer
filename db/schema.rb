@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_13_095016) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_14_094310) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -48,6 +48,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_13_095016) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "agenda_items", force: :cascade do |t|
+    t.integer "parent_agenda_item_id"
+    t.integer "document_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "do_by_start"
+    t.datetime "do_by_end"
+    t.string "status", default: "todo", null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_agenda_items_on_document_id"
+    t.index ["parent_agenda_item_id"], name: "index_agenda_items_on_parent_agenda_item_id"
+  end
+
   create_table "documents", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -79,4 +94,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_13_095016) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agenda_items", "agenda_items", column: "parent_agenda_item_id", on_delete: :nullify
+  add_foreign_key "agenda_items", "documents"
 end

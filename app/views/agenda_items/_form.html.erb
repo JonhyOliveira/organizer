@@ -1,0 +1,34 @@
+<%= content_for :attributes_form do %>
+  <%= form_with(model: agenda_item, class: "contents", data: { controller: "form-submit", "action": "turbo:submit-start->form-loader#onSubmitStart turbo:submit-end->form-loader#onSubmitEnd" }) do |form| %>
+    <%= form.hidden_field :document_id %>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody data-controller="agenda-item-range-selector">
+        <tr>
+          <td><%= form.label :status %></td>
+          <td>
+            <%= form.select :status, AgendaItem.statuses.keys.map { |status| [status.humanize, status] }, {}, class: "select", data: { action: "change->form-submit#onInput" } %>
+          </td>
+        </tr>
+        <tr data-agenda-item-range-selector-target="startTimeRow">
+          <td><%= form.label :start_time %></td>
+          <td><%= form.datetime_field :start_time, data: { action: "input->form-submit#onInput input->agenda-item-range-selector#onStartInput" } %></td>
+        </tr>
+        <tr data-agenda-item-range-selector-target="endTimeRow">
+          <td><%= form.label :end_time %></td>
+          <td><%= form.datetime_field :end_time, data: { action: "input->form-submit#onInput" } %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <%= form.submit hidden: true, data: { "form-submit-target" => "submitButton" } %>
+  <% end %>
+<% end %>
+
+<%= render "documents/form", document: agenda_item.document %>

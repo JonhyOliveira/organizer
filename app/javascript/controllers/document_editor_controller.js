@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { Editor } from "@tiptap"
-import { Dropcursor, UndoRedo } from '@tiptap/extensions'
+import { Dropcursor, UndoRedo, Placeholder } from '@tiptap/extensions'
 import Document from '@tiptap/document'
 import Paragraph from '@tiptap/paragraph'
 import Text from '@tiptap/text'
@@ -9,9 +9,6 @@ import Heading from '@tiptap/heading'
 import { ListKit } from '@tiptap/listkit'
 import { TextStyleKit } from "@tiptap/listtextstyle"
 import DragHandle from '@tiptap/draghandle'
-
-// Import Yjs for collaborative editing
-import * as Y from 'yjs'
 
 // Connects to data-controller="document-editor"
 export default class extends Controller {
@@ -28,8 +25,13 @@ export default class extends Controller {
       this.editor = new Editor({
         onUpdate({ editor }) {
           // Update the content target with the current editor content
-          that.contentTarget.value = JSON.stringify(editor.getJSON())
-          console.debug("Editor content updated", that.contentTarget.value)
+          const oldContent = that.contentTarget.value
+          const newContent = JSON.stringify(editor.getJSON())
+          if (newContent != oldContent) {
+            that.contentTarget.value = newContent
+            console.debug("Editor content updated")
+            that.dispatch("update", { detail: { content: that.contentTarget.value } })
+          }
         },
         element: this.editorTarget,
         extensions: [
@@ -38,6 +40,7 @@ export default class extends Controller {
             render: () => {
               const element = document.createElement('span')
               element.classList.add('drag-handle')
+              element.style.visibility = "hidden"
               element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>'
               return element
             }
@@ -52,6 +55,10 @@ export default class extends Controller {
             levels: [1, 2, 3],
           }),
           TextStyleKit,
+          Placeholder.configure({
+            placeholder: "Enter text ...",
+            emptyNodeClass: "is-node-empty"
+          })
         ],
         editable: this.editableValue || false,
       })

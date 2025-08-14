@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :product_labels
+  resources :agenda_items
+  # resources :product_labels
 
   resources :documents do
     collection do

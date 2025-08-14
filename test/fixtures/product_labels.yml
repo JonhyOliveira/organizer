@@ -1,27 +1,27 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  energy: 1.5
-  fats: 1.5
-  saturated_fats: 1.5
-  carbohydrates: 1.5
-  sugar_carbohydrates: 1.5
-  protein: 1.5
-  salt: 1.5
-  vitamins: 
-  ingredients: 
-  baseline_type: MyText
-  baseline: 1.5
+# one:
+#   energy: 1.5
+#   fats: 1.5
+#   saturated_fats: 1.5
+#   carbohydrates: 1.5
+#   sugar_carbohydrates: 1.5
+#   protein: 1.5
+#   salt: 1.5
+#   vitamins: N/A
+#   ingredients: N/A
+#   baseline_type: MyText
+#   baseline: 1.5
 
-two:
-  energy: 1.5
-  fats: 1.5
-  saturated_fats: 1.5
-  carbohydrates: 1.5
-  sugar_carbohydrates: 1.5
-  protein: 1.5
-  salt: 1.5
-  vitamins: 
-  ingredients: 
-  baseline_type: MyText
-  baseline: 1.5
+# two:
+#   energy: 1.5
+#   fats: 1.5
+#   saturated_fats: 1.5
+#   carbohydrates: 1.5
+#   sugar_carbohydrates: 1.5
+#   protein: 1.5
+#   salt: 1.5
+#   vitamins: N/A
+#   ingredients: N/A
+#   baseline_type: MyText
+#   baseline: 1.5

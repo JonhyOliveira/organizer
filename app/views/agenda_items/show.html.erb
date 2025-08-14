@@ -1,0 +1,13 @@
+<% content_for :title, "Showing agenda item" %>
+
+<div class="md:w-2/3 w-full">
+    <div class="breadcrumbs text-sm">
+        <ul>
+            <li><%= link_to "Agenda items", agenda_items_path %></li>
+            <li>Agenda item#<%= @agenda_item.id %></li>
+        </ul>
+    </div>
+    <div class="divider"></div>
+
+  <%= render "form", agenda_item: @agenda_item %>
+</div>

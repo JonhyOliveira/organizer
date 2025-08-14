@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[ show edit update destroy sanitize ]
+  before_action :set_document, only: %i[ show edit update destroy ]
 
   # GET /documents or /documents.json
   def index
@@ -15,19 +15,16 @@ class DocumentsController < ApplicationController
     @document = Document.new
   end
 
-  # GET /documents/1/edit
-  def edit
-  end
-
   # POST /documents or /documents.json
   def create
     @document = Document.new(document_params)
 
     respond_to do |format|
       if @document.save
-        format.html { redirect_to @document, notice: "Document was successfully created." }
+        format.html { redirect_to @document, notice: "#{@document.class.name.underscore.humanize} was successfully created." }
         format.json { render :show, status: :created, location: @document }
       else
+        format.turbo_stream { reder status: :unprocessable_entity, turbo_stream: model_error_turbo_stream(@document) }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
@@ -38,9 +35,11 @@ class DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @document.update(document_params)
-        format.html { redirect_to @document, notice: "Document was successfully updated." }
+        format.turbo_stream { render turbo_stream: model_updated_turbo_stream(@document) }
+        format.html { redirect_to @document, notice: "#{@document.class.name.underscore.humanize} was successfully updated." }
         format.json { render :show, status: :ok, location: @document }
       else
+        format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_updated_turbo_stream(@document) }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
@@ -56,14 +55,8 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def sanitize
-
-  end
-
-  def search
-    @documents = Document.search(search_params[:text])
-
-    render "index"
+  def edit
+    render :show
   end
 
   private

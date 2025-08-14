@@ -1,11 +1,11 @@
 # Pin npm packages by running ./bin/importmap
 
 pin "application"
+
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
-pin "quill", to: "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"
-pin "quill/core", to: "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.core.js"
+
 pin "@tiptap", to: "https://esm.sh/@tiptap/core"
 pin "@tiptap/document", to: "https://esm.sh/@tiptap/extension-document"
 pin "@tiptap/paragraph", to: "https://esm.sh/@tiptap/extension-paragraph"
@@ -24,6 +24,7 @@ pin "@tiptap/listkit", to: "https://esm.sh/@tiptap/extension-list"
 pin "@tiptap/heading", to: "https://esm.sh/@tiptap/extension-heading"
 pin "@tiptap/draghandle", to: "https://esm.sh/@tiptap/extension-drag-handle"
 pin "@tiptap/listtextstyle", to: "https://esm.sh/@tiptap/extension-text-style"
+pin "kute.js", to: "https://esm.sh/kute.js"
 
 pin "yjs", to: "https://esm.sh/yjs"
 pin_all_from "app/javascript/controllers", under: "controllers"

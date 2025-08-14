@@ -1,0 +1,9 @@
+<div data-notifications-target="notification" class="bg-error text-error-content px-3 py-2 font-medium rounded-md mt-3">
+  <h2><%= pluralize(model.errors.count, "error") %> prohibited this <%= model.class.name.underscore .humanize %> from being saved:</h2>
+
+  <ul class="list-disc ml-6">
+    <% model.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+  </ul>
+</div>

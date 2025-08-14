@@ -38,8 +38,10 @@
 
 }
 
-.tiptap {
-  @apply focus:outline-hidden;
+.organizer-editor {
+  :first-child {
+    @apply focus:outline-hidden;
+  }
 
   ul[data-type="taskList"] {
     @apply my-2;
@@ -47,5 +49,25 @@
     li {
       @apply flex flex-row gap-2
     }
+  }
+
+  .is-node-empty::before, .is-editor-empty:first-child::before {
+    color: #adbdbd;
+    content: attr(data-placeholder);
+    pointer-events: none;
+    float: left;
+    height: 0;
+  }
+
+  h1 {
+    @apply text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-4xl
+  }
+
+  h3 {
+    @apply text-xl
   }
 }
