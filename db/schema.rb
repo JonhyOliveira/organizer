@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_14_094310) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_14_222724) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -55,8 +55,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_094310) do
     t.datetime "end_time"
     t.datetime "do_by_start"
     t.datetime "do_by_end"
-    t.string "status", default: "todo", null: false
-    t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["document_id"], name: "index_agenda_items_on_document_id"

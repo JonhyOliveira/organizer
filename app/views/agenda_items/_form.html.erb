@@ -13,16 +13,23 @@
         <tr>
           <td><%= form.label :status %></td>
           <td>
-            <%= form.select :status, AgendaItem.statuses.keys.map { |status| [status.humanize, status] }, {}, class: "select", data: { action: "change->form-submit#onInput" } %>
+            <%= turbo_frame_tag dom_id(agenda_item).concat("_status") do %>
+              <%= render "status_tag", agenda_item: agenda_item %>
+            <% end %>
           </td>
         </tr>
-        <tr data-agenda-item-range-selector-target="startTimeRow">
-          <td><%= form.label :start_time %></td>
-          <td><%= form.datetime_field :start_time, data: { action: "input->form-submit#onInput input->agenda-item-range-selector#onStartInput" } %></td>
-        </tr>
-        <tr data-agenda-item-range-selector-target="endTimeRow">
-          <td><%= form.label :end_time %></td>
-          <td><%= form.datetime_field :end_time, data: { action: "input->form-submit#onInput" } %></td>
+        <tr>
+          <td><%= form.label :execution %></td>
+          <td class="flex flex-col space-between">
+            <div class="flex flex-row gap-2 w-fit">
+              <%= form.datetime_field :start_time, data: { action: "input->form-submit#onInput" } %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+              </svg>
+              <%= form.datetime_field :end_time, data: { action: "input->form-submit#onInput" } %>
+            </div>
+            <span>123</span>
+          </td>
         </tr>
         <tr data-agenda-item-range-selector-target="doByStartRow">
           <td><%= form.label :do_by_start %></td>

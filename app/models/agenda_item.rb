@@ -2,8 +2,7 @@ class AgendaItem < ApplicationRecord
   belongs_to :document
   belongs_to :parent_agenda_item, class_name: "AgendaItem", optional: true
 
-  enum :status, [ :todo, :doing, :done ]
-  validates :status, presence: true
+  validates :status, presence: true, inclusion: { in: [ :todo, :doing, :done ] }
 
   validate :do_by_range_valid
   validate :execution_range_valid
@@ -14,6 +13,16 @@ class AgendaItem < ApplicationRecord
 
   def do_by_range
     do_by_start..do_by_end
+  end
+
+  def status
+    return :todo if execution_range.begin.nil? && execution_range.end.nil?
+
+    if execution_range.end.present?
+      :done
+    else
+      :doing
+    end
   end
 
   private

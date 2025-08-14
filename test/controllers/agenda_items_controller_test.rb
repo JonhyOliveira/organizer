@@ -2,7 +2,7 @@ require "test_helper"
 
 class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @agenda_item = agenda_items(:one)
+    @agenda_item = AgendaItem.create!(document: documents(:one))
   end
 
   test "should get index" do
@@ -17,7 +17,7 @@ class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create agenda_item" do
     assert_difference("AgendaItem.count") do
-      post agenda_items_url, params: { agenda_item: {} }
+      post agenda_items_url, params: { agenda_item: { document_id: documents(:one).id } }
     end
 
     assert_redirected_to agenda_item_url(AgendaItem.last)
@@ -34,7 +34,7 @@ class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update agenda_item" do
-    patch agenda_item_url(@agenda_item), params: { agenda_item: {} }
+    patch agenda_item_url(@agenda_item), params: { agenda_item: { start_time: Time.current.to_s, end_time: nil } }
     assert_redirected_to agenda_item_url(@agenda_item)
   end
 
@@ -44,5 +44,28 @@ class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to agenda_items_url
+  end
+
+  test "status behaves correctly" do
+    ai = AgendaItem.new()
+
+    assert_equal :todo, ai.status
+    ai.validate
+    assert ai.errors[:status].none?
+
+    ai.start_time = Time.current
+    assert_equal :doing, ai.status
+    ai.validate
+    assert ai.errors[:status].none?
+
+    ai.end_time = Time.current + 1.hour
+    assert_equal :done, ai.status
+    ai.validate
+    assert ai.errors[:status].none?
+
+    ai.start_time = nil
+    assert_equal :done, ai.status
+    ai.validate
+    assert ai.errors[:status].none?
   end
 end

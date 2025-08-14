@@ -1,5 +1,8 @@
 class AgendaItemsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :set_agenda_item, only: %i[ show edit update destroy ]
+  helper AgendaItemHelper
 
   # GET /agenda_items or /agenda_items.json
   def index
@@ -41,12 +44,15 @@ class AgendaItemsController < ApplicationController
   def update
     respond_to do |format|
       if @agenda_item.update(agenda_item_params)
-        format.turbo_stream { render turbo_stream: model_updated_turbo_stream(@agenda_item) }
-        format.html { redirect_to @agenda_item, notice: "#{@agenda_item.class.name.underscore.humanize} was successfully updated." }
+        format.turbo_stream { render turbo_stream: [
+          model_updated_turbo_stream(@agenda_item),
+          turbo_stream.update(dom_id(@agenda_item).concat("_status"), partial: "agenda_items/status_tag", locals: { agenda_item: @agenda_item })
+        ] }
+        format.html { redirect_to @agenda_item, notice: "Agenda item was successfully updated." }
         format.json { render :show, status: :ok, location: @agenda_item }
       else
         format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_error_turbo_stream(@agenda_item) }
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :show, status: :unprocessable_entity, notice: "Agenda item could not be updated. " + @agenda_item.errors.full_messages.join(", ") }
         format.json { render json: @agenda_item.errors, status: :unprocessable_entity }
       end
     end
@@ -70,6 +76,23 @@ class AgendaItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def agenda_item_params
-      params.expect(agenda_item: [ :start_time, :end_time, :do_by_start, :do_by_end, :status, :document_id ])
+      params.expect(agenda_item: [ :start_time, :end_time, :do_by_start, :do_by_end, :document_id ])
+    end
+
+    def agenda_status_tag_for(agenda_item)
+      status_class = case agenda_item.status.to_sym
+      when :todo
+        "error"
+      when :doing
+        "warning"
+      when :done
+        "success"
+      else
+        "info"
+      end
+
+      tag.span class: [ "bg-#{status_class}", "text-#{status_class}-content" ] do
+        agenda_item.status.humanize
+      end
     end
 end

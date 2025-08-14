@@ -45,7 +45,7 @@ class AgendaItemTest < ActiveSupport::TestCase
   end
 
   test "belongs to parent agenda item" do
-    parent_ai = AgendaItem.create!(document: documents(:one), status: "todo")
+    parent_ai = AgendaItem.create!(document: documents(:one))
     child_ai = AgendaItem.new(document: documents(:one), parent_agenda_item: parent_ai)
 
     assert child_ai.valid?
