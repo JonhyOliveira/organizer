@@ -24,6 +24,14 @@
           <td><%= form.label :end_time %></td>
           <td><%= form.datetime_field :end_time, data: { action: "input->form-submit#onInput" } %></td>
         </tr>
+        <tr data-agenda-item-range-selector-target="doByStartRow">
+          <td><%= form.label :do_by_start %></td>
+          <td><%= form.datetime_field :do_by_start, data: { action: "input->form-submit#onInput input->agenda-item-range-selector#onDoByStartInput" } %></td>
+        </tr>
+        <tr data-agenda-item-range-selector-target="doByEndRow">
+          <td><%= form.label :do_by_end %></td>
+          <td><%= form.datetime_field :do_by_end, data: { action: "input->form-submit#onInput" } %></td>
+        </tr>
       </tbody>
     </table>
 
