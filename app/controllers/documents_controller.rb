@@ -39,7 +39,7 @@ class DocumentsController < ApplicationController
         format.html { redirect_to @document, notice: "#{@document.class.name.underscore.humanize} was successfully updated." }
         format.json { render :show, status: :ok, location: @document }
       else
-        format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_updated_turbo_stream(@document) }
+        format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_error_turbo_stream(@document) }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end

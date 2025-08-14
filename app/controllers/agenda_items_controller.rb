@@ -45,7 +45,7 @@ class AgendaItemsController < ApplicationController
         format.html { redirect_to @agenda_item, notice: "#{@agenda_item.class.name.underscore.humanize} was successfully updated." }
         format.json { render :show, status: :ok, location: @agenda_item }
       else
-        format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_updated_turbo_stream(@agenda_item) }
+        format.turbo_stream { render status: :unprocessable_entity, turbo_stream: model_error_turbo_stream(@agenda_item) }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @agenda_item.errors, status: :unprocessable_entity }
       end
