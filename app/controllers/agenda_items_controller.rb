@@ -1,12 +1,19 @@
 class AgendaItemsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :set_agenda_item, only: %i[ show edit update destroy ]
+  before_action :set_agenda_item, only: %i[ show edit update destroy tracker ]
   helper AgendaItemHelper
 
   # GET /agenda_items or /agenda_items.json
   def index
     @agenda_items = AgendaItem.all
+  end
+
+  def tracker
+  end
+
+  def track
+    puts parms.inspect
   end
 
   # GET /agenda_items/1 or /agenda_items/1.json

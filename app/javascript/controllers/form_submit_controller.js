@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = [ "submitButton" ]
 
   connect() {
-    console.debug("FormSubmitController connected")
+    console.debug("FormSubmitController connected", this.element)
     console.debug("hasSubmitButtonTarget", this.hasSubmitButtonTarget)
 
     // Ensure the submit button is present

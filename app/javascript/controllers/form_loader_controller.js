@@ -6,6 +6,7 @@ export default class extends Controller {
   static targets = [ "icon" ]
 
   connect() {
+    console.debug("FormLoaderController connected", this.element)
     console.debug("hasIconTarget", this.hasIconTarget)
 
     this.loadingTween = KUTE.fromTo(this.iconTarget, {

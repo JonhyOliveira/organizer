@@ -1,10 +1,6 @@
 <% content_for :title, "Agenda items" %>
 
 <div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Agenda items</h1>
     <%= link_to "New agenda item", new_agenda_item_path, class: "btn btn-info" %>
@@ -20,7 +16,8 @@
             <%= render agenda_item %>
           <% end %>
           <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= button_to "Destroy", agenda_item, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+            <%= link_to "Show", agenda_item, class: "w-full sm:w-auto btn btn-info text-info-content" %>
+            <%= button_to "Destroy", agenda_item, method: :delete, class: "w-full sm:w-auto rounded-md btn btn-error text-error-content", data: { turbo_confirm: "Are you sure?" } %>
           </div>
         </div>
       <% end %>

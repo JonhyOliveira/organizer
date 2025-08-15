@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
-  resources :agenda_items
+  resources :agenda_items do
+    member do
+      get :status_tag
+      get :tracker
+      post :track
+    end
+  end
   # resources :product_labels
 
   resources :documents do
-    collection do
-      post :search
-      post :sanitize
-    end
+
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

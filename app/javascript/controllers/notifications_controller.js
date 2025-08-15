@@ -15,7 +15,7 @@ export default class extends Controller {
     // Remove it after a delay
     setTimeout(() => {
       this.removeNotification(element)
-    }, 10000) // Adjust the delay as needed
+    }, 1200) // Adjust the delay as needed
   }
 
   removeNotification(element) {
