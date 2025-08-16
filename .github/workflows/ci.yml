@@ -66,7 +66,7 @@ jobs:
           bundler-cache: true
 
       - name: Run audit
-        run: bin/setup && bin/bundle audit
+        run: bin/setup --skip-server && bin/bundle audit
 
   test:
     runs-on: ubuntu-latest
