@@ -28,4 +28,8 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  terms:
+    start_time: "start time"
+  errors:
+    messages:
+      cant_be_in_the_future: "can't be in the future"

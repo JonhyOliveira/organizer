@@ -1,6 +1,6 @@
 <%= content_for :attributes_form do %>
-  <%= form_with(model: agenda_item, class: "contents", data: { controller: "form-submit", "action": "turbo:submit-start->form-loader#onSubmitStart turbo:submit-end->form-loader#onSubmitEnd" }) do |form| %>
-    <%= form.hidden_field :document_id %>
+  <%= form_with(model: agenda_item, class: "contents", data: { controller: "form-submit timezone", "action": "turbo:submit-start->form-loader#onSubmitStart turbo:submit-end->form-loader#onSubmitEnd" }) do |form| %>
+    <%= form.hidden_field :timezone, data: { "timezone-target": "timezone" } %>
 
     <table class="table">
       <thead>
@@ -30,8 +30,8 @@
             </div>
             <div class="flex items-center">
             <%= link_to tracker_agenda_item_path(agenda_item), class: "btn btn-outline btn-xs btn-secondary" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm7.75-4.25a.75.75 0 0 0-1.5 0V8c0 .414.336.75.75.75h3.25a.75.75 0 0 0 0-1.5h-2.5v-3.5Z" clip-rule="evenodd" />
               </svg>
             <% end %>
             </div>

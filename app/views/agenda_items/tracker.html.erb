@@ -8,10 +8,12 @@
   </div>
   <div class="divider"></div>
 
-  <div data-controller="agenda-item-tracker form-loader form-submit" class="flex flex-col gap-4" data-action="agenda-item-tracker:input->form-submit#onInput">
+  <div data-controller="agenda-item-tracker form-loader form-submit timezone" class="flex flex-col gap-4" data-action="agenda-item-tracker:input->form-submit#onInput">
     <%= form_with model: @agenda_item, data: {
         "action": "turbo:submit-start->form-loader#onSubmitStart turbo:submit-end->form-loader#onSubmitEnd"
       }, class: "flex place-content-center" do |form| %>
+      <%= form.hidden_field :timezone, data: { "timezone-target": "timezone" } %>
+
       <div class="flex flex-col md:flex-row gap-2 w-fit items-center">
         <%= form.datetime_field :start_time, step: 1, data: { action: "input->form-submit#onInput", "agenda-item-tracker-target": "startTimeInput" } %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

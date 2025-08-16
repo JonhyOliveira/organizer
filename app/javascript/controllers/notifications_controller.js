@@ -5,17 +5,17 @@ export default class extends Controller {
   static targets = [ "notification" ]
 
   connect() {
-    this.element
   }
 
   notificationTargetConnected(element) {
-    console.debug("Notification target connected", element)
     // Optionally, you can add logic here to handle when a notification is added
+    const delay = element.innerText.length * 80
+    console.debug("Notification target connected", element, "Disappearing in", delay)
 
     // Remove it after a delay
     setTimeout(() => {
       this.removeNotification(element)
-    }, 1200) // Adjust the delay as needed
+    }, delay) // Adjust the delay as needed
   }
 
   removeNotification(element) {

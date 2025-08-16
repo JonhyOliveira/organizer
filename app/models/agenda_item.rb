@@ -38,9 +38,7 @@ class AgendaItem < ApplicationRecord
     return unless start_time.present?
     return unless end_time.present?
 
-    errors.add(:end_time, I18n.t("errors.messages.greater_than", count: start_time)) if start_time > end_time
-
-    now = Time.zone.now
-    errors.add(:start_time, I18n.t("errors.message.greater_than", count: now)) if start_time > now
+    errors.add(:end_time, I18n.t("errors.messages.greater_than", count: I18n.t("terms.start_time"))) if start_time > end_time
+    errors.add(:start_time, I18n.t("errors.messages.cant_be_in_the_future" )) if start_time.future?
   end
 end

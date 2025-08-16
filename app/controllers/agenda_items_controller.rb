@@ -2,6 +2,7 @@ class AgendaItemsController < ApplicationController
   include ActionView::RecordIdentifier
 
   before_action :set_agenda_item, only: %i[ show edit update destroy tracker ]
+  around_action :set_locale, only: %i[ create update ]
   helper AgendaItemHelper
 
   # GET /agenda_items or /agenda_items.json
@@ -86,20 +87,13 @@ class AgendaItemsController < ApplicationController
       params.expect(agenda_item: [ :start_time, :end_time, :do_by_start, :do_by_end, :document_id ])
     end
 
-    def agenda_status_tag_for(agenda_item)
-      status_class = case agenda_item.status.to_sym
-      when :todo
-        "error"
-      when :doing
-        "warning"
-      when :done
-        "success"
-      else
-        "info"
-      end
+    def timezone_params
+      params.expect(agenda_item: [ :timezone ])
+    end
 
-      tag.span class: [ "bg-#{status_class}", "text-#{status_class}-content" ] do
-        agenda_item.status.humanize
+    def set_locale
+      Time.use_zone(timezone_params[:timezone]) do
+        yield
       end
     end
 end
