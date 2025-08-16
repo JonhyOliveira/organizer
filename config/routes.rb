@@ -3,7 +3,14 @@ Rails.application.routes.draw do
     member do
       get :status_tag
       get :tracker
-      post :track
+      get :document
+      get :hierarchy
+      get :attributes
+    end
+
+    collection do
+      get :list
+      get :kaban
     end
   end
   # resources :product_labels

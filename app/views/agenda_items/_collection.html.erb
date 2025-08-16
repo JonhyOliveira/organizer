@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "agenda_items", class: "w-full", data: { "turbo-action": "advance" } do %>
+  <%= render "agenda_items/collection/header", selected: selected_mode  %>
+
+  <div class="divider"></div>
+
+  <%= yield :collection_body %>
+<% end %>

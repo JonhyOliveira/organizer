@@ -1,0 +1,15 @@
+<div class="flex flex-row gap-4">
+  <% links = [
+    ["Document", document_agenda_item_path(agenda_item), :document],
+    ["Attributes", attributes_agenda_item_path(agenda_item), :attributes],
+    ["Hierarchy", hierarchy_agenda_item_path(agenda_item), :hierarchy]
+  ].each do |link_name, link_url, link_id| %>
+    <%
+      classes = [ "btn", "btn-accent" ]
+      classes += [ "btn-disabled" ] if selected == link_id
+    %>
+    <%= link_to link_name, link_url, class: classes, data: { "turbo-action": "advance" } %>
+  <% end %>
+</div>
+
+<div class="divider"></div>

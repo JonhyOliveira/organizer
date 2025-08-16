@@ -1,14 +1,10 @@
 class AgendaItemsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :set_agenda_item, only: %i[ show edit update destroy tracker ]
+  before_action :set_agenda_collection, only: %i[ list kaban ]
+  before_action :set_agenda_item, only: %i[ show edit update destroy tracker document attributes ]
   around_action :set_locale, only: %i[ create update ]
   helper AgendaItemHelper
-
-  # GET /agenda_items or /agenda_items.json
-  def index
-    @agenda_items = AgendaItem.all
-  end
 
   def tracker
   end
@@ -19,6 +15,12 @@ class AgendaItemsController < ApplicationController
 
   # GET /agenda_items/1 or /agenda_items/1.json
   def show
+  end
+
+  def document
+  end
+
+  def attributes
   end
 
   # GET /agenda_items/new
@@ -84,6 +86,10 @@ class AgendaItemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_agenda_item
       @agenda_item = AgendaItem.find(params.expect(:id))
+    end
+
+    def set_agenda_collection
+      @agenda_items = AgendaItem.all
     end
 
     # Only allow a list of trusted parameters through.

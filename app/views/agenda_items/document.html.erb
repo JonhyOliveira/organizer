@@ -1,0 +1,5 @@
+<%= turbo_frame_tag dom_id(@agenda_item) do %>
+  <%= render "agenda_items/header", agenda_item: @agenda_item, selected: :document %>
+
+  <%= render "documents/form", document: @agenda_item.document %>
+<% end %>

@@ -1,13 +1,10 @@
-<div class="md:w-2/3 w-full">
-  <div class="breadcrumbs text-sm">
-    <ul>
-      <li><%= link_to "Agenda items", agenda_items_path %></li>
-      <li><%= link_to "Agenda item##{@agenda_item.id}", @agenda_item %></li>
-      <li>Execution Tracker</li>
-    </ul>
-  </div>
-  <div class="divider"></div>
+<% content_for :breadcrumbs do %>
+  <li><%= link_to "Agenda items", agenda_items_path %></li>
+  <li><%= link_to "Agenda item##{@agenda_item.id}", attributes_agenda_item_path(@agenda_item) %></li>
+  <li>Execution Tracker</li>
+<% end %>
 
+<div class="md:w-2/3 w-full">
   <div data-controller="agenda-item-tracker form-loader form-submit timezone" class="flex flex-col gap-4" data-action="agenda-item-tracker:input->form-submit#onInput">
     <%= form_with model: @agenda_item, data: {
         "action": "turbo:submit-start->form-loader#onSubmitStart turbo:submit-end->form-loader#onSubmitEnd"
