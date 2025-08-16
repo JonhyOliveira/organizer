@@ -65,8 +65,11 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install bundler-audit
+        run: gem install bundler-audit
+
       - name: Run audit
-        run: bin/setup --skip-server && bin/bundle audit
+        run: bundle audit
 
   test:
     runs-on: ubuntu-latest
