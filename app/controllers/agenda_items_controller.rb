@@ -34,7 +34,11 @@ class AgendaItemsController < ApplicationController
 
   # POST /agenda_items or /agenda_items.json
   def create
-    @agenda_item = AgendaItem.new(agenda_item_params)
+    if params[:document_title].present?
+      @agenda_item = AgendaItem.new(document: Document.create!(title: params[:document_title]))
+    else
+      @agenda_item = AgendaItem.new(agenda_item_params)
+    end
 
     respond_to do |format|
       if @agenda_item.save

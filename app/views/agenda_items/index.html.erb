@@ -3,7 +3,21 @@
 <div class="w-full">
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Agenda items</h1>
-    <%= link_to "New agenda item", new_agenda_item_path, class: "btn btn-info" %>
+    <button class="btn btn-info" onclick="new_agenda_item_dialog.showModal()">New Agenda Item</button>
+    <dialog id="new_agenda_item_dialog" class="modal">
+      <div class="modal-box">
+        <%= form_with url: agenda_items_path, method: :post, class: "flex flex-col gap-2" do |form| %>
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Title</legend>
+            <%= form.text_field :document_title, class: "input", placeholder: "Item title goes here" %>
+          </fieldset>
+          <%= form.submit "Create", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   </div>
 
   <div class="divider"></div>
