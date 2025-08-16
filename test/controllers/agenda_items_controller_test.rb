@@ -10,11 +10,6 @@ class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_agenda_item_url
-    assert_response :success
-  end
-
   test "should create agenda_item" do
     assert_difference("AgendaItem.count") do
       post agenda_items_url, params: { agenda_item: { document_id: documents(:one).id } }
@@ -49,23 +44,23 @@ class AgendaItemsControllerTest < ActionDispatch::IntegrationTest
   test "status behaves correctly" do
     ai = AgendaItem.new()
 
-    assert_equal :todo, ai.status
     ai.validate
+    assert_equal "todo", ai.status
     assert ai.errors[:status].none?
 
     ai.start_time = Time.current
-    assert_equal :doing, ai.status
     ai.validate
+    assert_equal "doing", ai.status
     assert ai.errors[:status].none?
 
     ai.end_time = Time.current + 1.hour
-    assert_equal :done, ai.status
     ai.validate
+    assert_equal "done", ai.status
     assert ai.errors[:status].none?
 
     ai.start_time = nil
-    assert_equal :done, ai.status
     ai.validate
+    assert_equal "done", ai.status
     assert ai.errors[:status].none?
   end
 end

@@ -9,7 +9,7 @@ class AgendaItemTest < ActiveSupport::TestCase
 
     assert ai1.valid? == false
     assert ai1.errors[:end_time].any?
-    assert_equal I18n.t("errors.messages.greater_than", count: ai1.start_time), ai1.errors[:end_time].first
+    assert_equal I18n.t("errors.messages.greater_than", count: I18n.t("terms.start_time")), ai1.errors[:end_time].first
   end
 
   test "invalid do by range" do

@@ -1,7 +1,7 @@
 <% content_for :title, "Editing document" %>
 <% content_for :breadcrumbs do %>
   <li><%= link_to "Documents", documents_path %></li>
-  <li><%= link_to "Document#{id}", @document %></li>
+  <li><%= link_to "Document#{@document.id}", @document %></li>
 <% end %>
 <% id = (@document.present? && @document.id.present?) ? "##{@document.id}" : " ID N/A" %>
 <div class="md:w-2/3 w-full">
