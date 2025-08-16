@@ -31,7 +31,18 @@
           <%= render "shared/notification", message: notice %>
         <% end %>
       </turbo-frame>
-      <div class="w-15/16 my-4 flex flex-col items-center">
+
+      <% if content_for(:breadcrumbs) %>
+        <div class="breadcrumbs text-sm">
+          <ul>
+            <%= content_for(:breadcrumbs) %>
+          </ul>
+          <div class="divider"></div>
+        </div>
+      <% end %>
+
+
+      <div class="w-15/16 mb-4 flex flex-col items-center">
         <%= yield %>
       </div>
     </main>
