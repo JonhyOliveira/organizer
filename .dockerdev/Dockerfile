@@ -2,7 +2,7 @@
 # check=error=true
 
 ARG RUBY_VERSION=3.4.5
-FROM docker.io/library/ruby:${RUBY_VERSION}-slim
+FROM docker.io/library/ruby:${RUBY_VERSION}
 
 # Rails app lives here
 ENV APP_HOME=/rails
@@ -13,9 +13,6 @@ RUN useradd -ms /bin/false app_user
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 libc6-dev build-essential libyaml-dev
 
-# Install package necessary for tailwindcss:watch
-RUN apt-get install -y --no-install-recommends watchman
-
 ENV RAILS_ENV="development"
 ENV PATH=$APP_HOME/bin:$PATH
 
@@ -24,5 +21,6 @@ COPY Gemfile Gemfile.lock ./
 ARG BUNDLER_VERSION=2.6.9
 RUN gem update --system && \
     gem install bundler -v ${BUNDLER_VERSION} && \
+    gem install bundler-audit && \
     gem install foreman && \
     chown -R app_user:app_user .

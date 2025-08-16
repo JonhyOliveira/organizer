@@ -71,3 +71,5 @@ gem "ostruct", "~> 0.6.3"
 gem "byebug", "~> 12.0", groups: [ :development, :test ]
 
 gem "date", "~> 3.4"
+
+gem "bundler-audit", "~> 0.9.2"
